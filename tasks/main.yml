@@ -1,0 +1,19 @@
+---
+- name: Install Beanstalkd
+  apt: pkg=beanstalkd state=latest
+  notify: Restart Beanstalkd
+
+- name: Beanstalkd Daemon Configuration
+  template: src=beanstalkd.j2 dest=/etc/default/beanstalkd owner=root group=root mode=0644
+  notify: Restart Beanstalkd
+
+- name: Register Consul Service
+  template: src=consul.j2 dest=/etc/consul.d/{{ beanstalk_consul_service }}.json
+
+- name: Register Consul KV Configuration
+  command:
+      curl -d"{{ beanstalk_consul_service }}.service.consul:{{ beanstalk_port }}" -XPUT "http://localhost:8500/v1/kv/apps/{{ item }}/{{ beanstalk_consul_service }}/connection"
+  with_items: beanstalk_apps
+
+- name: Reload Consul
+  command: consul reload
