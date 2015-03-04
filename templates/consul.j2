@@ -1,7 +1,7 @@
 {
     "service": {
         "name": "beanstalk",
-        "tags": [],
+        "tags": {{ beanstalk_apps|to_nice_json }},
         "port": {{ beanstalk_port }}
     }
 }

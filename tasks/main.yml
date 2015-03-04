@@ -8,11 +8,11 @@
   notify: Restart Beanstalkd
 
 - name: Register Consul Service
-  template: src=consul.j2 dest=/etc/consul.d/{{ beanstalk_consul_service }}.json
+  template: src=consul.j2 dest=/etc/consul.d/beanstalk.json
 
 - name: Register Consul KV Configuration
   command:
-      curl -d"{{ beanstalk_consul_service }}.service.consul:{{ beanstalk_port }}" -XPUT "http://localhost:8500/v1/kv/apps/{{ item }}/{{ beanstalk_consul_service }}/connection"
+      curl -d"{{ item }}.beanstalk.service.consul:{{ beanstalk_port }}" -XPUT "http://localhost:8500/v1/kv/apps/{{ item }}/beanstalk/connection"
   with_items: beanstalk_apps
 
 - name: Reload Consul

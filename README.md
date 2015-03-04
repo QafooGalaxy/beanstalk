@@ -13,14 +13,14 @@ Resource
 --------
 
 Beanstalk provides a resource for applications. It registers
-a service on domain `beanstalk.service.consul` and provides
+a service on domain `$app.beanstalk.service.consul` and provides
 configuration through Consul:
 
-    $ curl http://localhost:8500/v1/kv/apps/_global/beanstalk/connection
+    $ curl http://localhost:8500/v1/kv/apps/foo/beanstalk/connection
 
 And environment variable:
 
-    $ export BEANSTALK_CONNECTION="beanstalk.service.consul:11300"
+    $ export BEANSTALK_CONNECTION="foo.beanstalk.service.consul:11300"
 
 Variables
 ---------
@@ -31,8 +31,7 @@ Beanstalk Default Configuration
     beanstalk_listen: "{{ ansible_all_ipv4_addresses|ipaddr('private')|first|default(['127.0.0.1']) }}"
     beanstalk_port: 11300
     beanstalk_extra: ""
-    beanstalk_consul_service: "beanstalk"
-    beanstalk_apps: ['_global']
+    beanstalk_apps: []
 
 Uses the first private ip-address of the host that is designated as beanstalk machine.
 
@@ -57,13 +56,13 @@ servers with consul:
         - role: beanstalk
           beanstalk_port: 11500
           beanstalk_extra: "-z 100000 -b /var/lib/beanstalk"
-          beanstalk_consul_service: "beanstalk1"
           beanstalk_apps: ['foo']
+
     - hosts: beanstalk2
+      roles
         - role: beanstalk
           beanstalk_port: 11400
           beanstalk_extra: "-z 100000 -b /var/lib/beanstalk"
-          beanstalk_consul_service: "beanstalk2"
           beanstalk_apps: ['bar']
 
 License
