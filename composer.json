@@ -1,0 +1,10 @@
+{
+    "name": "qafoogalaxy/foorge.beanstalk",
+    "description": "Beanstalk Service for a Foorge Cluster",
+    "license": "BSD-2-Clause",
+    "type": "ansible-role",
+    "require": {
+        "qafoogalaxy/installer": "@stable",
+        "qafoogalaxy/foorge.base": "@stable"
+    }
+}
